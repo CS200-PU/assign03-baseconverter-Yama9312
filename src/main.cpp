@@ -21,6 +21,7 @@ string decimalToHex (const string& strNumber);
 string hexToDecimal (const string& strNumber);
 string hexToBinary (const string& strNumber);
 string binaryToHex (const string& strNumber);
+string reverseString (const string& strNumber);
 
 const char BINARY = 'b',
            HEX = 'x',
@@ -39,21 +40,30 @@ int main () {
   const string QUIT = "q";
   const string PROMPT = "Enter your string to convert (q to quit): ";
   string input;
+  string convert;
   char base = 'a';
 
   printTitle("*");
   while (QUIT != input) { 
     input = getNumber(PROMPT);
-    base = getBase(input);
-    if (base == HEX){
-      // might be able to keep this in the get base function
-      // maybe add a handle hex, bin, int function
-    }
-    else if (base == BINARY){
-
-    }
-    else {
-
+    if (input != QUIT){
+      base = getBase(input);
+      if (base == HEX){
+        cout << "the decimal conversion is: " << hexToDecimal (input) << endl;
+        cout << "the binary converstion is: " << hexToBinary (input) << endl;
+      }
+      else if (base == BINARY){
+        cout << "the decimal conversion is: " << binaryToDecimal (input) 
+             << endl;
+        cout << "the hexadecimal converstion is: " << binaryToHex (input) 
+             << endl;
+      }
+      else if (base == DECIMAL) {
+        cout << "the binary converstion is: " << decimalToBinary (input) 
+             << endl;
+        cout << "the hexadecimal converstion is: " << decimalToHex (input) 
+             << endl;
+      }
     }
   }
   
@@ -91,8 +101,8 @@ int hexCharToInt (char hexDigit) {
  Returned:	 	the base of the number
  *************************************************************************/
 char getBase (const string& strNumber) {
-  
   char base;
+
   if (strNumber[1] == BINARY){
     base = BINARY;
   }
@@ -144,7 +154,7 @@ void printTitle (const string& myTitle) {
  *************************************************************************/
 string binaryToDecimal (const string& strNumber) {
   string dec;
-  
+
   for (int i = 0; i < strNumber.length(); i++) {
 
   }
@@ -160,10 +170,15 @@ string binaryToDecimal (const string& strNumber) {
  Returned:	 	the number after conversion
  *************************************************************************/
 string decimalToBinary (const string& strNumber) {
-  string bin;
+  const int BASE_TWO = 2;
+  string bin = "0b";
+  int remain = 0;
+  int solution = stoi (strNumber);
 
-  for (int i = 0; i < strNumber.length(); i++) {
-
+  while (solution) {
+    solution /= BASE_TWO;
+    remain = solution % BASE_TWO;
+    bin += to_string (remain);
   }
   return bin;
 }
@@ -230,4 +245,22 @@ string binaryToHex (const string& strNumber) {
   hex = binaryToDecimal (strNumber);
   hex = decimalToHex (hex);
   return hex;
+}
+/**************************************************************************
+ Function: 	 	reverseString
+
+ Description: reverses a string
+
+ Parameters:	strNumber - the string that is reversed
+ 
+ Returned:	 	the reversed string
+ *************************************************************************/
+string reverseString (const string& strNumber) {
+  string reverse;
+  int count = strNumber.length() - 1;
+  for (int i = 0; i < strNumber.length(); i++){
+    reverse[i] = strNumber[count];
+    count --;
+  }
+  return reverse;
 }
