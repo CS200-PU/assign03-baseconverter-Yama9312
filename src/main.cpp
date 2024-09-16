@@ -81,14 +81,13 @@ int main () {
  Returned:	 	number value of the hex letter
  *************************************************************************/
 int hexCharToInt (char hexDigit) {
-  const int NUM_SHIFT = 11;
   int num = 0;
 
-  if (hexDigit >= 'A' && hexDigit <= 'F'){ // if digit is a letter
-    num = (static_cast <int> (hexDigit - 'A')) + NUM_SHIFT;
-  }
-  else { // if digit is a number
-    num = static_cast<int> (hexDigit - '0');
+  for (int i = 0; i < HEX_VALS.length(); i++){
+    if (hexDigit == HEX_VALS[i]){
+      num = i;
+      break;
+    }
   }
 
   return num;
@@ -188,6 +187,9 @@ string decimalToBinary (const string& strNumber) {
   }
   bin += "b0";
   reverseString (bin);
+  if (bin.length() < 3){
+    bin += "0";
+  }
   return bin;
 }
 /**************************************************************************
@@ -213,7 +215,9 @@ string decimalToHex (const string& strNumber) {
   }
   hex += "x0";
   reverseString (hex);
-
+  if (hex.length() < 3){
+    hex += "0";
+  }
   return hex;
 }
 /**************************************************************************
