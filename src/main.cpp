@@ -9,6 +9,7 @@
 //******************************************************************************
 
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 int hexCharToInt (char hexDigit);
@@ -21,11 +22,12 @@ string decimalToHex (const string& strNumber);
 string hexToDecimal (const string& strNumber);
 string hexToBinary (const string& strNumber);
 string binaryToHex (const string& strNumber);
-string reverseString (const string& strNumber);
+string reverseString (string& strNumber);
 
 const char BINARY = 'b',
            HEX = 'x',
            DECIMAL = 'd';
+const string HEX_VALS = "0123456789ABCDEF";
 
 /**************************************************************************
  Function: 	 	main
@@ -86,7 +88,7 @@ int hexCharToInt (char hexDigit) {
     num = (static_cast <int> (hexDigit - 'A')) + NUM_SHIFT;
   }
   else { // if digit is a number
-    num = static_cast <int> (hexDigit);
+    num = static_cast<int> (hexDigit - '0');
   }
 
   return num;
@@ -153,12 +155,16 @@ void printTitle (const string& myTitle) {
  Returned:	 	the number after conversion
  *************************************************************************/
 string binaryToDecimal (const string& strNumber) {
-  string dec;
-
-  for (int i = 0; i < strNumber.length(); i++) {
-
+  const int BASE_TWO = 2;
+  int dec = 0;
+  int location = strNumber.length() - 3;
+  for (int i = 2; i < strNumber.length(); i++) {
+    if (strNumber[i] == '1'){
+      dec += pow(BASE_TWO, location);
+    }
+    location--;
   }
-  return dec;
+  return to_string(dec);
 }
 /**************************************************************************
  Function: 	 	decimalToBinary
@@ -171,15 +177,17 @@ string binaryToDecimal (const string& strNumber) {
  *************************************************************************/
 string decimalToBinary (const string& strNumber) {
   const int BASE_TWO = 2;
-  string bin = "0b";
+  string bin;
   int remain = 0;
   int solution = stoi (strNumber);
 
   while (solution) {
-    solution /= BASE_TWO;
     remain = solution % BASE_TWO;
+    solution /= BASE_TWO;
     bin += to_string (remain);
   }
+  bin += "b0";
+  reverseString (bin);
   return bin;
 }
 /**************************************************************************
@@ -192,11 +200,20 @@ string decimalToBinary (const string& strNumber) {
  Returned:	 	the number after conversion
  *************************************************************************/
 string decimalToHex (const string& strNumber) {
+  const int BASE_SIXTEEN = 16;
   string hex;
+  string insertVal;
+  int remain = 0;
+  int solution = stoi (strNumber);
 
-  for (int i = 0; i < strNumber.length(); i++) {
-
+  while (solution) {
+    remain = solution % BASE_SIXTEEN;
+    solution /= BASE_SIXTEEN;
+    hex += HEX_VALS[remain];
   }
+  hex += "x0";
+  reverseString (hex);
+
   return hex;
 }
 /**************************************************************************
@@ -209,12 +226,18 @@ string decimalToHex (const string& strNumber) {
  Returned:	 	the number after conversion
  *************************************************************************/
 string hexToDecimal (const string& strNumber) {
-  string dec;
+  const int BASE_SIXTEEN = 16;
+  int dec = 0;
+  int location = strNumber.length() - 3;
+  int currentVal = 0;
 
-  for (int i = 0; i < strNumber.length(); i++) {
-
+  for (int i = 2; i < strNumber.length(); i++) {
+    currentVal = hexCharToInt (strNumber[i]);
+    dec += currentVal * (pow(BASE_SIXTEEN, location));
+    location--;
   }
-  return dec;
+
+  return to_string (dec);
 }
 /**************************************************************************
  Function: 	 	hexToBinary
@@ -255,12 +278,14 @@ string binaryToHex (const string& strNumber) {
  
  Returned:	 	the reversed string
  *************************************************************************/
-string reverseString (const string& strNumber) {
+string reverseString (string& strNumber) {
   string reverse;
+  reverse.resize(strNumber.length());
   int count = strNumber.length() - 1;
   for (int i = 0; i < strNumber.length(); i++){
     reverse[i] = strNumber[count];
     count --;
   }
+  strNumber = reverse;
   return reverse;
 }
