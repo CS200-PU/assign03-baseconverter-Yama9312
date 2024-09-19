@@ -22,3 +22,6 @@ clean:
 
 valgrind:
 		valgrind ${VALGRIND_FLAGS} bin/main.exe
+
+printAll:
+	enscript ${ENSCRIPT_FLAGS} -Ec src/main.cpp  | ps2pdf - bin/Yama9312.pdf

@@ -51,9 +51,10 @@ int main () {
     if (input != QUIT){
       base = getBase(input);
       if (base == HEX){
-        cout << "The decimal conversion is: " << hexToDecimal (input) << endl;
-        cout << "The binary converstion is: " << hexToBinary (input) << endl
+        cout << "The decimal conversion is: " << hexToDecimal (input) 
              << endl;
+        cout << "The binary converstion is: " << hexToBinary (input) 
+             << endl << endl;
       }
       else if (base == BINARY){
         cout << "The decimal conversion is: " << binaryToDecimal (input) 
